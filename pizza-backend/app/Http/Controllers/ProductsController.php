@@ -33,7 +33,7 @@ final class ProductsController extends Controller
 
         $page = $request->input('page');
 
-        $items = $this->shopItemRepository->paginateAll($page, $perPage);
+        $items = $this->shopItemRepository->paginateAll($perPage);
 
         return \response()->json($items);
 //        View::make('shop.index', [
