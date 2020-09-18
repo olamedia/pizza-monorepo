@@ -1,8 +1,43 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+  <v-app>
+    <v-app-bar app dense
+
+               elevate-on-scroll
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Pizza</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+
+
+
+      <template v-slot:extension>
+        <v-tabs align-with-title>
+          <v-tab to="/" exact>Меню</v-tab>
+          <v-tab to="/cart">
+            <v-badge
+              inline
+              color="warning"
+              content="6"
+              overlap
+            >
+              Корзина
+            </v-badge>
+          </v-tab>
+        </v-tabs>
+      </template>
+
+    </v-app-bar>
+    <v-main>
+      <v-container fluid>
+        <nuxt/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
+
 
 <style>
 html {

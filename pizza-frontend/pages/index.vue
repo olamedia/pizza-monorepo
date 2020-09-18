@@ -1,25 +1,32 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        pizza-frontend
-      </h1>
-      <h2 class="subtitle">
-        Pizza frontend
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
+  <div>
+    <div class="d-flex flex-wrap">
+
+        <v-card v-for="item in items" :key="item.id" max-width="344" class="d-flex flex-column justify-space-between ma-3 mt-0" elevation="1">
+          <div>
+            <div>
+              <v-img src="/assets/images/pizza.jpg" width="100%" aspect-ratio="3" />
+            </div>
+            <v-card-title>{{ item.name }}</v-card-title>
+            <v-card-text class="text-left">
+              {{ item.description }}
+            </v-card-text>
+          </div>
+          <v-card-actions>
+            <v-chip dark color="green" class="ml-1">{{ item.price }} {{ item.price_currency }}</v-chip>
+            <v-spacer></v-spacer>
+            <v-btn text>Add to cart</v-btn>
+          </v-card-actions>
+        </v-card>
+
     </div>
-  </section>
+    <v-pagination
+      v-model="page"
+      :length="totalPages"
+      prev-icon="mdi-menu-left"
+      next-icon="mdi-menu-right"
+    ></v-pagination>
+  </div>
 </template>
 
 <script>
@@ -28,7 +35,33 @@ import AppLogo from '~/components/AppLogo.vue'
 export default {
   components: {
     AppLogo
-  }
+  },
+  data(){
+    return {
+      page: 1,
+      totalPages: 4,
+      items: []
+    }
+  },
+  async fetch(){
+    const result = await this.$axios.$get('/api/shop', {
+      params: {
+        page: this.page
+      }
+    });
+    const {current_page, data, last_page} = result;
+    this.page = current_page;
+    this.totalPages = last_page;
+    this.items = data;
+
+    console.log(this.items);
+  },
+  watch: {
+    'page': '$fetch',
+    '$route.query': '$fetch'
+  },
+
+  // fetchOnServer: false
 }
 </script>
 

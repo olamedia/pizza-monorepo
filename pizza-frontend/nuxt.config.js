@@ -20,6 +20,18 @@ module.exports = {
   /*
   ** Build configuration
   */
+  buildModules: [
+    '@nuxtjs/vuetify',
+  ],
+  modules: [
+    '@nuxtjs/axios',
+  ],
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api/': 'http://localhost:8000',
+  },
   build: {
     /*
     ** Run ESLint on save
