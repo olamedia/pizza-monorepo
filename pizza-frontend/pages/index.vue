@@ -44,7 +44,7 @@ export default {
     }
   },
   async fetch(){
-    const result = await this.$axios.$get('/api/shop', {
+    const result = await this.$axios.$get('/api/product/list', {
       params: {
         page: this.page
       }

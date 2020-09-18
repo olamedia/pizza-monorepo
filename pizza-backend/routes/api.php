@@ -1,5 +1,7 @@
 <?php
+declare(strict_types=1);
 
+use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//Route::middleware('auth:api')->group(function () {
+//    Route::get('/shop', [ShopController::class, 'index']);
+//});
+//    Route::middleware('auth:api')->group(function () {
+Route::get('product/list', [ProductsController::class, 'index']);
+//    });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
