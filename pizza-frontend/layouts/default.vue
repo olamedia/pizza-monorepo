@@ -1,16 +1,14 @@
 <template>
   <v-app>
-    <v-app-bar app dense
-
-               elevate-on-scroll
-    >
+    <v-app-bar app dense elevate-on-scroll>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-toolbar-title>Pizza</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-
+      <SanctumLoginBtn>Login</SanctumLoginBtn>
+      <SanctumLogoutBtn>Log out</SanctumLogoutBtn>
 
 
       <template v-slot:extension>
@@ -24,6 +22,16 @@
               overlap
             >
               Корзина
+            </v-badge>
+          </v-tab>
+          <v-tab to="/orders">
+            <v-badge
+              inline
+              color="warning"
+              content="6"
+              overlap
+            >
+              Заказы
             </v-badge>
           </v-tab>
         </v-tabs>
@@ -86,3 +94,10 @@ html {
 }
 </style>
 
+<script>
+import SanctumLoginBtn from "~/components/Sanctum/SanctumLoginBtn";
+import SanctumLogoutBtn from "~/components/Sanctum/SanctumLogoutBtn";
+export default {
+  components: {SanctumLogoutBtn, SanctumLoginBtn}
+}
+</script>
