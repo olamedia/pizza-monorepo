@@ -13,7 +13,7 @@
             </v-card-text>
           </div>
           <v-card-actions>
-            <v-chip dark color="green" class="ml-1">{{ item.price }} {{ item.price_currency }}</v-chip>
+            <v-chip dark color="green" class="ml-1">{{ item.price.toFixed(2) }} {{ item.price_currency }}</v-chip>
             <v-spacer></v-spacer>
             <v-btn text color="green">
               <v-icon left>mdi-cart</v-icon>

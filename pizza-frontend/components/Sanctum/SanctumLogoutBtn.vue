@@ -1,5 +1,7 @@
 <template>
-  <v-btn v-if="$store.state.auth.loggedIn" @click="logout"><slot /></v-btn>
+  <v-btn text v-if="$store.state.auth.loggedIn" @click="logout">
+    <v-icon left>mdi-logout</v-icon><slot />
+  </v-btn>
 </template>
 
 <script>

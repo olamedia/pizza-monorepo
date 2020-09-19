@@ -1,6 +1,6 @@
 <template>
-  <v-btn v-if="!$store.state.auth.loggedIn" text to="/login">
-    <slot />
+  <v-btn text v-if="!$store.state.auth.loggedIn" to="/login">
+    <v-icon left>mdi-login</v-icon><slot />
   </v-btn>
 </template>
 
