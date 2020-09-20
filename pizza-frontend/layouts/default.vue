@@ -7,9 +7,10 @@
 
       <v-spacer></v-spacer>
 
-      <SanctumLoginBtn>Login</SanctumLoginBtn>
-      <SanctumLogoutBtn>Log out</SanctumLogoutBtn>
-
+      <client-only>
+            <SanctumLoginBtn>Login</SanctumLoginBtn>
+            <SanctumLogoutBtn>Log out</SanctumLogoutBtn>
+      </client-only>
 
       <template v-slot:extension>
         <v-tabs align-with-title>

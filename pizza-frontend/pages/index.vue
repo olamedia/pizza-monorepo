@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container class="flex-column">
     <div class="d-flex flex-wrap">
 
         <v-card v-for="item in items" :key="item.id" max-width="344" class="d-flex flex-column justify-space-between ma-3 mt-0" elevation="1">
@@ -30,7 +30,7 @@
       prev-icon="mdi-menu-left"
       next-icon="mdi-menu-right"
     ></v-pagination>
-  </div>
+  </v-container>
 </template>
 
 <script>

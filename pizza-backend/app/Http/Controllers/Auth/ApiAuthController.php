@@ -31,6 +31,7 @@ final class ApiAuthController extends Controller
     {
         // $request->user()->currentAccessToken()->delete();
         $request->user()->tokens()->delete(); // logout from all devices
+        Auth::logout();
     }
 
     public function user(Request $request)

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +21,20 @@ Route::prefix('auth')->group(function(){
 });
 
 //Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [\App\Http\Controllers\Auth\ApiAuthController::class, 'user']);
+
+Route::prefix('user')->group(function(){
+    Route::get('/', [\App\Http\Controllers\Auth\ApiAuthController::class, 'user']);
+
+    Route::prefix('order')->group(function(){
+        Route::get('list', [\App\Http\Controllers\OrderController::class, 'listForCurrentUser']);
+        Route::get('{orderId}', [\App\Http\Controllers\OrderController::class, 'index']);
+    });
+
+});
+
 //});
 
-Route::get('product/list', [ProductsController::class, 'index']);
+Route::get('product/list', [ProductController::class, 'paginate']);
 
 //Route::prefix('user')->middleware('auth:sanctum')->group(function () {
 //    Route::get('/', [\App\Http\Controllers\Auth\AuthController::class, 'user']);

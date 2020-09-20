@@ -8,6 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User
+ *
+ * @method \Database\Factories\UserFactory factory()
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
@@ -38,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
