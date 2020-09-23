@@ -11,6 +11,9 @@
 # URL
 http://localhost:3000/
 
+# Credentials
+`admin@example.org`:`admin`
+
 ## Down
 ```sh
 ./down.sh
