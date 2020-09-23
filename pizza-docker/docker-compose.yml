@@ -51,13 +51,13 @@ services:
       - mysql-data:/var/lib/mysql
 #    ports:
 #      - "3306:3306"
-  adminer:
-    image: adminer
-    restart: always
-    depends_on:
-      - mysql
-    ports:
-      - "8001:8080"
+#  adminer:
+#    image: adminer
+#    restart: always
+#    depends_on:
+#      - mysql
+#    ports:
+#      - "8001:8080"
 
 volumes:
   mysql-data:
