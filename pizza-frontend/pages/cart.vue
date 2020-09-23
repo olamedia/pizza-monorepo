@@ -99,24 +99,26 @@ export default {
   },
   methods: {
     async createOrder(){
-      const { order } = await this.$axios.$post('/api/order', {
-        items: this.cartItems.map(cartItem => {
-          return {
-            quantity: cartItem.quantity,
-            product_id: cartItem.product.id
+      this.$axios.$get('/api/sanctum/csrf-cookie').then(async(response) => {
+        const {order} = await this.$axios.$post('/api/order', {
+          items: this.cartItems.map(cartItem => {
+            return {
+              quantity: cartItem.quantity,
+              product_id: cartItem.product.id
+            }
+          }),
+          currency: this.$store.state.currency.currentCurrency,
+          details: this.details,
+          delivery: this.deliveryItem
+        })
+        await this.$store.commit('cart/clearCart')
+        this.sentOrder = true
+        if (order) {
+          if (this.$auth.loggedIn) {
+            await this.$router.push('/orders/order/' + order.id)
           }
-        }),
-        currency: this.$store.state.currency.currentCurrency,
-        details: this.details,
-        delivery: this.deliveryItem
-      })
-      await this.$store.commit('cart/clearCart')
-      this.sentOrder = true
-      if (order){
-        if (this.$auth.loggedIn) {
-          await this.$router.push('/orders/order/' + order.id)
         }
-      }
+      });
     }
   }
 }
