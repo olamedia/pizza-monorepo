@@ -15,3 +15,7 @@ http://localhost:3000/
 ```sh
 ./down.sh
 ```
+
+## Requirements
+
+* Docker-compose https://docs.docker.com/compose/install/
