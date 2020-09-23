@@ -22,8 +22,8 @@ services:
     image: pizza-backend
     depends_on:
       - mysql
-#    volumes:
-#      - laravel-app:/app
+    volumes:
+      - laravel-app:/app/storage
   frontend:
     container_name: pizza-frontend
     build:
