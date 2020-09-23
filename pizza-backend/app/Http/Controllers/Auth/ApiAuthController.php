@@ -40,7 +40,7 @@ final class ApiAuthController extends Controller
     {
         $user = $request->user();
 
-        abort_if(!$user, 403);
+        abort_if(!$user, 403, 'No user');
 
         return [
             'user' => $user
