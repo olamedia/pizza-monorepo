@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
@@ -32,8 +33,12 @@ final class OrderController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-
-        abort_if(!$user, 403);
+        if (!$user){
+            $user = User::findGuest();
+        }
+        if (!$user) {
+            abort(500, 'No guest configured');
+        }
 
         $params = $request->only('items', 'details', 'currency');
         $orderCurrency = $params['currency'];

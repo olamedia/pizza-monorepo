@@ -55,7 +55,7 @@ export const actions = {
       const result = await $axios.$post('/api/user/cart', { items: state.items })
     }catch ( error ){
       if ('response' in error && error.response.status === 403) {
-        return await this.$auth.logout();
+        // return await this.$auth.logout();
       }
     }
   },
@@ -74,7 +74,7 @@ export const actions = {
       commit('mergeBackendItems', backendItems)
     }catch ( error ){
       if ('response' in error && error.response.status === 403) {
-        return await this.$auth.logout();
+        // return await this.$auth.logout();
       }
     }
   },

@@ -22,6 +22,11 @@ final class UserSeeder extends Seeder
         /**
          * @var \App\Models\User
          */
+        $guest = User::factory()->guest()->create();
+
+        /**
+         * @var \App\Models\User
+         */
         $admin = User::factory()->admin()->has(
             Order::factory()->count(10)->has(
                 OrderItem::factory()->count(5)

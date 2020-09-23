@@ -60,9 +60,11 @@ name: "OrderedProductCard",
   methods: {
     async modifyCartItem(product, quantity){
       await this.$store.dispatch('cart/addProduct', {product, quantity})
-      saveCartThrottler(async () => {
-        await this.$store.dispatch('cart/saveUserCart', this.$axios)
-      })
+      if (this.$auth.loggedIn) {
+        saveCartThrottler(async () => {
+          await this.$store.dispatch('cart/saveUserCart', this.$axios)
+        })
+      }
     }
   }
 }

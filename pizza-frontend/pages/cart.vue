@@ -1,10 +1,11 @@
 <template>
   <v-container class="d-flex flex-column align-stretch justify-start" style="width: 100%">
     <h1 class="text-left">Корзина</h1>
-    <div v-if="sentOrder">
-      Заказ отправлен
+    <div>
+      <v-alert type="success" v-if="sentOrder">
+        Заказ отправлен
+      </v-alert>
     </div>
-
     <div class="d-flex">
       <v-spacer class="flex-grow-1"></v-spacer>
       <CurrencySelect class="flex-grow-0"></CurrencySelect>

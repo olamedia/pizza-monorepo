@@ -1,0 +1,64 @@
+version: '3.5'
+services:
+  api-nginx:
+    image: nginx
+    restart: unless-stopped
+    build:
+      context: ../
+      dockerfile: pizza-docker/docker/nginx/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "8000:80"
+  backend: # laravel-php-backend
+    container_name: pizza-backend
+    restart: unless-stopped
+    build:
+      args:
+        user: laravel
+        uid: 1000
+      context: ../
+      dockerfile: pizza-docker/docker/laravel-backend/Dockerfile
+    image: pizza-backend
+    depends_on:
+      - mysql
+#    volumes:
+#      - laravel-app:/app
+  frontend:
+    container_name: pizza-frontend
+    build:
+      context: ../
+      dockerfile: pizza-docker/docker/nuxt-frontend/Dockerfile
+    image: pizza-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    command:
+      "npm run start"
+    depends_on:
+      - api-nginx
+  mysql:
+    image: mysql:5.7
+#    hostname: 'mysql'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pizza
+      MYSQL_DATABASE: pizza
+      MYSQL_USER: pizza
+      MYSQL_PASSWORD: pizza
+      TZ: 'Asia/Yekaterinburg'
+    volumes:
+      - mysql-data:/var/lib/mysql
+#    ports:
+#      - "3306:3306"
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8001:8080"
+
+volumes:
+  mysql-data:
+  laravel-app:

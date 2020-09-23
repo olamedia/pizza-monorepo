@@ -1,0 +1,30 @@
+### Laravel
+/pizza-backend/vendor/
+/pizza-backend/node_modules/
+/pizza-backend/npm-debug.log
+/pizza-backend/yarn-error.log
+
+# Laravel 4 specific
+/pizza-backend/bootstrap/compiled.php
+/pizza-backend/app/storage/
+
+# Laravel 5 & Lumen specific
+/pizza-backend/public/storage
+/pizza-backend/public/hot
+
+/pizza-backend/storage/*.key
+/pizza-backend/.env
+/pizza-backend/Homestead.yaml
+/pizza-backend/Homestead.json
+/pizza-backend/.vagrant
+/pizza-backend/.phpunit.result.cache
+
+### JetBrains
+/pizza-backend/.idea/
+
+
+### Frontend
+/pizza-frontend/.idea/
+/pizza-frontend/node_modules/
+/pizza-frontend/npm-debug.log
+/pizza-frontend/yarn-error.log

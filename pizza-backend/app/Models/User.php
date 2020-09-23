@@ -55,4 +55,8 @@ final class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public static function findGuest(){
+        return User::find(1);
+    }
 }
