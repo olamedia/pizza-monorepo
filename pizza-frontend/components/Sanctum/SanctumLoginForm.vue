@@ -60,19 +60,10 @@ export default {
       this.$axios.$get('/api/sanctum/csrf-cookie').then(async(response) => {
         // Login...
         await this.$auth.loginWith('local', { data: this.login })
-        // console.log(response)
+        if (this.$store.state.auth.loggedIn){
+          await this.$store.dispatch('cart/loadUserCart', this.$axios)
+        }
       });
-        // .then(() => this.$toast.success('Logged In!'))
-
-      //     .then(() => this.$toast.success('Logged In!'))
-      // try {
-      //   this.$axios.defaults.xsrfHeaderName
-      //   const token = await this.$axios.$post('/api/auth/login', this.login);
-      //   this.$auth.setUser(user);
-      //   // console.log(response)
-      // } catch (err) {
-      //   console.log(err)
-      // }
     },
   }
 }

@@ -30,14 +30,20 @@ final class ApiAuthController extends Controller
     public function logout(Request $request)
     {
         // $request->user()->currentAccessToken()->delete();
-        $request->user()->tokens()->delete(); // logout from all devices
+        if ($request->user()) {
+            $request->user()->tokens()->delete(); // logout from all devices
+        }
         Auth::logout();
     }
 
     public function user(Request $request)
     {
+        $user = $request->user();
+
+        abort_if(!$user, 403);
+
         return [
-            'user' => $request->user()
+            'user' => $user
         ];
     }
 }

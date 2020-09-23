@@ -1,13 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-class OrderFactory extends Factory
+final class OrderFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

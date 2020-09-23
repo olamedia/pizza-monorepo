@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -6,10 +7,11 @@ use App\Repositories\OrderItemRepository;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+final class OrderController extends Controller
 {
-    private $orderRepository;
     private $orderItemRepository;
+
+    private $orderRepository;
 
     public function __construct(OrderRepository $orderRepository, OrderItemRepository $orderItemRepository)
     {
@@ -17,8 +19,11 @@ class OrderController extends Controller
         $this->orderItemRepository = $orderItemRepository;
     }
 
-    public function index($orderId, Request $request){
+    public function index($orderId, Request $request)
+    {
         $user = $request->user();
+
+        abort_if(!$user, 403);
 
         $order = $this->orderRepository->getByIdForUserId($orderId, $user->id);
 
@@ -30,8 +35,11 @@ class OrderController extends Controller
         ]);
     }
 
-    public function listForCurrentUser(Request $request){
+    public function listForCurrentUser(Request $request)
+    {
         $user = $request->user();
+
+        abort_if(!$user, 403);
 
         $orders = $this->orderRepository->paginateForUserId($user->id);
 

@@ -1,54 +1,70 @@
 <template>
-  <div>
-    CART
-  </div>
+  <v-container class="d-flex flex-column align-stretch justify-start" style="width: 100%">
+    <h1 class="text-left">Корзина</h1>
+    <div class="d-flex">
+      <v-spacer class="flex-grow-1"></v-spacer>
+      <CurrencySelect class="flex-grow-0"></CurrencySelect>
+    </div>
+    <OrderedProductCard v-for="cartItem in cartItems" :key="cartItem.product.id" :quantity="cartItem.quantity" :product="cartItem.product">
+
+    </OrderedProductCard>
+    <v-divider></v-divider>
+    <div class="text-right ma-3" v-if="cartItemsNumber">
+      Доставка <PriceChipInCurrentCurrency :price="10" :currency="'USD'"></PriceChipInCurrentCurrency>
+    </div>
+    <div class="text-right ma-3" v-if="cartItemsNumber">
+      Итого <TotalPriceChip :items="totalItems"></TotalPriceChip>
+    </div>
+  </v-container>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+import OrderedProductCard from "~/components/OrderedProductCard";
+import CurrencySelect from "~/components/CurrencySelect";
+import PriceChip from "~/components/PriceChip";
+import PriceChipInCurrentCurrency from "~/components/PriceChipInCurrentCurrency";
+import TotalPriceChip from "~/components/TotalPriceChip";
 
 export default {
   components: {
-    AppLogo
+    TotalPriceChip,
+    PriceChipInCurrentCurrency,
+    PriceChip,
+    CurrencySelect,
+    OrderedProductCard
   },
   data(){
     return {
-      'items': [ // order items
-
-      ]
+      items: [],
+      deliveryItem: {
+        price: 10,
+        currency: 'USD',
+        quantity: 1
+      },
+      products: {}
     }
-  }
+  },
+  computed: {
+    cartItems(){
+      return this.$store.state.cart.items
+    },
+    cartItemsNumber(){
+      return this.$store.getters["cart/totalItemsNumber"]
+    },
+    totalItems(){
+      const totalItems = this.cartItems.map(cartItem => {
+        const product = cartItem.product
+        return {
+          price: product.price,
+          currency: product.price_currency,
+          quantity: cartItem.quantity
+        }
+      })
+      totalItems.push(this.deliveryItem)
+      return totalItems
+    },
+  },
 }
 </script>
 
-<style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>
 

@@ -1,21 +1,25 @@
 <template>
-  <v-container class="flex-column">
-    <div class="d-flex flex-wrap">
+  <v-container class="flex-column align-stretch">
+  <div class="d-flex">
+    <v-spacer class="flex-grow-1"></v-spacer>
+    <CurrencySelect class="flex-grow-0"></CurrencySelect>
+  </div>
+    <div class="d-flex flex-wrap justify-space-between">
 
-        <v-card v-for="item in items" :key="item.id" max-width="344" class="d-flex flex-column justify-space-between ma-3 mt-0" elevation="1">
+        <v-card v-for="product in products" :key="product.id" max-width="344" class="d-flex flex-column justify-space-between mb-3 mt-0" elevation="1">
           <div>
             <div>
               <v-img src="/assets/images/pizza.jpg" width="100%" aspect-ratio="3" />
             </div>
-            <v-card-title>{{ item.name }}</v-card-title>
+            <v-card-title>{{ product.name }}</v-card-title>
             <v-card-text class="text-left">
-              {{ item.description }}
+              {{ product.description }}
             </v-card-text>
           </div>
           <v-card-actions>
-            <v-chip dark color="green" class="ml-1">{{ item.price.toFixed(2) }} {{ item.price_currency }}</v-chip>
+            <PriceChip :price="product.price" :currency="product.price_currency" :targetCurrency="currency"></PriceChip>
             <v-spacer></v-spacer>
-            <v-btn text color="green">
+            <v-btn text color="green" @click="modifyCartItem(product, 1)">
               <v-icon left>mdi-cart</v-icon>
 
               В корзину
@@ -34,20 +38,39 @@
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
+
+import CurrencySelect from "~/components/CurrencySelect";
+import PriceChip from "~/components/PriceChip";
+import { saveCartThrottler } from "~/helpers/saveCartThrottler";
 
 export default {
   components: {
-    AppLogo
+    PriceChip,
+    CurrencySelect,
+
   },
   data(){
     return {
       page: 1,
       totalPages: 4,
-      items: []
+      products: []
+    }
+  },
+  computed: {
+    currency() {
+      return this.$store.state.currency.currentCurrency
+    }
+  },
+  methods: {
+    async modifyCartItem(product, quantity){
+      await this.$store.dispatch('cart/addProduct', {product, quantity})
+      saveCartThrottler(async () => {
+        await this.$store.dispatch('cart/saveUserCart', this.$axios)
+      })
     }
   },
   async fetch(){
+
     const result = await this.$axios.$get('/api/product/list', {
       params: {
         page: this.page
@@ -56,9 +79,8 @@ export default {
     const {current_page, data, last_page} = result;
     this.page = current_page;
     this.totalPages = last_page;
-    this.items = data;
+    this.products = data;
 
-    console.log(this.items);
   },
   watch: {
     'page': '$fetch',

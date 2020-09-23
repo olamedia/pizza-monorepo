@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\CartItem;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class OrderItemFactory extends Factory
+final class CartItemFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = OrderItem::class;
+    protected $model = CartItem::class;
 
     /**
      * Define the model's default state.
@@ -24,7 +25,9 @@ final class OrderItemFactory extends Factory
     public function definition()
     {
         return [
-            'order_id' => Order::factory()
+            'user_id' => User::factory(),
+            'product_id' => Product::all()->random()->id,
+            'quantity' => $this->faker->numberBetween(1, 3)
         ];
     }
 }

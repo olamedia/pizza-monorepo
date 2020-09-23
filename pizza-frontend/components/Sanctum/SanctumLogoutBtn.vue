@@ -12,6 +12,7 @@ export default {
   methods: {
     async logout(){
       await this.$auth.logout('local')
+      this.$store.commit('cart/clearCart')
     }
   }
 }

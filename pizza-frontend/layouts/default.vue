@@ -8,30 +8,28 @@
       <v-spacer></v-spacer>
 
       <client-only>
-            <SanctumLoginBtn>Login</SanctumLoginBtn>
-            <SanctumLogoutBtn>Log out</SanctumLogoutBtn>
+        <SanctumLoginBtn>Login</SanctumLoginBtn>
+        <SanctumLogoutBtn>Log out</SanctumLogoutBtn>
       </client-only>
 
       <template v-slot:extension>
-        <v-tabs align-with-title>
+        <v-tabs align-with-title v-if="!$store.state.auth.loggedIn">
           <v-tab to="/" exact>Меню</v-tab>
           <v-tab to="/cart">
-            <v-badge
-              inline
-              color="warning"
-              content="6"
-              overlap
-            >
+              Корзина
+            <v-badge v-if="cartItemsNumber" inline :color="cartItemsNumber ? 'warning' : ''" :content="cartItemsNumber" overlap>
+            </v-badge>
+          </v-tab>
+        </v-tabs>
+        <v-tabs align-with-title v-if="$store.state.auth.loggedIn">
+          <v-tab to="/" exact>Меню</v-tab>
+          <v-tab to="/cart">
+            <v-badge inline color="warning" content="6" overlap>
               Корзина
             </v-badge>
           </v-tab>
           <v-tab to="/orders">
-            <v-badge
-              inline
-              color="warning"
-              content="6"
-              overlap
-            >
+            <v-badge inline color="warning" content="6" overlap>
               Заказы
             </v-badge>
           </v-tab>
@@ -64,41 +62,21 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
 
 <script>
 import SanctumLoginBtn from "~/components/Sanctum/SanctumLoginBtn";
 import SanctumLogoutBtn from "~/components/Sanctum/SanctumLogoutBtn";
+
 export default {
-  components: {SanctumLogoutBtn, SanctumLoginBtn}
+  components: {SanctumLogoutBtn, SanctumLoginBtn},
+  computed: {
+    cartItems(){
+      return this.$store.state.cart.items
+    },
+    cartItemsNumber(){
+      return this.$store.getters["cart/totalItemsNumber"]
+    }
+  }
 }
 </script>

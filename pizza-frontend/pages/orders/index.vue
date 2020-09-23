@@ -1,6 +1,6 @@
 <template>
 
-    <v-container class="d-flex flex-column align-stretch" style="width: 100%">
+    <v-container class="d-flex flex-column align-stretch justify-start">
     <div>
       <h1 class="text-left">Заказы</h1>
     </div>
@@ -13,25 +13,23 @@
 </template>
 
 <script>
-
-
 export default {
   components: {
-
   },
   data(){
     return {
-      'orders': [ // order items
-
-      ]
+      'orders': []
     }
   },
   async fetch(){
-    const result = await this.$axios.$get('/api/user/order/list');
-
-    this.orders = result.data;
-
-    console.log(result);
+    try {
+      const result = await this.$axios.$get('/api/user/order/list')
+      this.orders = result.data;
+    }catch ( error ){
+      if ('response' in error && error.response.status === 403) {
+        return await this.$auth.logout();
+      }
+    }
   },
   methods: {
     formatDate(dateString){
@@ -43,7 +41,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
 
