@@ -62,7 +62,7 @@ export default {
       return this.rates[this.currency] / this.rates[this.resultCurrency];
     },
     resultPrice(){
-      return (this.price * this.resultRate).toPrecision(2);
+      return (this.price * this.resultRate).toPrecision(3);
     },
     totalPrice(){
       return this.resultPrice * this.quantity

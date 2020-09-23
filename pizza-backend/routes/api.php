@@ -32,6 +32,8 @@ Route::prefix('user')->group(function () {
     });
 });
 
+Route::post('order', [\App\Http\Controllers\OrderController::class, 'createForCurrentUser']);
+
 Route::get('currency', function(\Illuminate\Http\Request $request){
     return \response()->json([
         'USD' =>  1,

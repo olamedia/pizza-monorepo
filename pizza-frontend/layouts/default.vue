@@ -13,27 +13,7 @@
       </client-only>
 
       <template v-slot:extension>
-        <v-tabs align-with-title v-if="!$store.state.auth.loggedIn">
-          <v-tab to="/" exact>Меню</v-tab>
-          <v-tab to="/cart">
-              Корзина
-            <v-badge v-if="cartItemsNumber" inline :color="cartItemsNumber ? 'warning' : ''" :content="cartItemsNumber" overlap>
-            </v-badge>
-          </v-tab>
-        </v-tabs>
-        <v-tabs align-with-title v-if="$store.state.auth.loggedIn">
-          <v-tab to="/" exact>Меню</v-tab>
-          <v-tab to="/cart">
-            <v-badge inline color="warning" content="6" overlap>
-              Корзина
-            </v-badge>
-          </v-tab>
-          <v-tab to="/orders">
-            <v-badge inline color="warning" content="6" overlap>
-              Заказы
-            </v-badge>
-          </v-tab>
-        </v-tabs>
+        <AppTabs></AppTabs>
       </template>
 
     </v-app-bar>
@@ -67,16 +47,12 @@ html {
 <script>
 import SanctumLoginBtn from "~/components/Sanctum/SanctumLoginBtn";
 import SanctumLogoutBtn from "~/components/Sanctum/SanctumLogoutBtn";
+import CartBadge from "@/components/CartBadge";
+import OrdersBadge from "~/components/OrdersBadge";
+import AppTabs from "~/components/AppTabs";
 
 export default {
-  components: {SanctumLogoutBtn, SanctumLoginBtn},
-  computed: {
-    cartItems(){
-      return this.$store.state.cart.items
-    },
-    cartItemsNumber(){
-      return this.$store.getters["cart/totalItemsNumber"]
-    }
-  }
+  components: {AppTabs, OrdersBadge, CartBadge, SanctumLogoutBtn, SanctumLoginBtn},
+
 }
 </script>

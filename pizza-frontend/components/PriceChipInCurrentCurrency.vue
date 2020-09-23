@@ -1,20 +1,17 @@
 <template>
 
-  <span>
-      <template v-if="!primary">{{ totalPrice.toFixed(2) }} {{ resultCurrency }}</template>
-      <v-chip v-if="primary" dark label color="green" class="ml-1">
-        {{ totalPrice.toFixed(2) }} {{ resultCurrency }}
-      </v-chip>
-  </span>
+  <BasePriceChip :primary="primary" :price="totalPrice" :currency="resultCurrency">
+  </BasePriceChip>
 
 </template>
 
 <script>
 
 
+import BasePriceChip from "~/components/BasePriceChip";
 export default {
   name: "PriceChipInCurrentCurrency",
-  components: {},
+  components: {BasePriceChip},
   props: {
     primary: {
       type: Boolean,
@@ -61,7 +58,7 @@ export default {
       return this.rates[this.currency] / this.rates[this.resultCurrency];
     },
     resultPrice(){
-      return (this.price * this.resultRate).toPrecision(2);
+      return (this.price * this.resultRate).toPrecision(3);
     },
     totalPrice(){
       return this.resultPrice * this.quantity

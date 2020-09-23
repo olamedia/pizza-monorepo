@@ -24,7 +24,11 @@ final class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
+            'full_name' => $this->faker->firstName.' '.$this->faker->lastName,
+            'address' => $this->faker->address,
+            'currency' => $this->faker->randomElement(['USD', 'EUR']),
+            'delivery_price' => $this->faker->randomFloat(2, 5, 10),
         ];
     }
 }

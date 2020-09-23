@@ -1,6 +1,10 @@
 <template>
   <v-container class="d-flex flex-column align-stretch justify-start" style="width: 100%">
     <h1 class="text-left">Корзина</h1>
+    <div v-if="sentOrder">
+      Заказ отправлен
+    </div>
+
     <div class="d-flex">
       <v-spacer class="flex-grow-1"></v-spacer>
       <CurrencySelect class="flex-grow-0"></CurrencySelect>
@@ -10,10 +14,30 @@
     </OrderedProductCard>
     <v-divider></v-divider>
     <div class="text-right ma-3" v-if="cartItemsNumber">
-      Доставка <PriceChipInCurrentCurrency :price="10" :currency="'USD'"></PriceChipInCurrentCurrency>
+      Доставка <PriceChipInCurrentCurrency :price="deliveryItem.price" :currency="deliveryItem.currency"></PriceChipInCurrentCurrency>
     </div>
     <div class="text-right ma-3" v-if="cartItemsNumber">
       Итого <TotalPriceChip :items="totalItems"></TotalPriceChip>
+    </div>
+
+    <v-form v-if="cartItemsNumber">
+      <v-text-field
+        v-model="details.fullName"
+        :rules="[rules.required]"
+        label="ФИО"
+        required
+      ></v-text-field>
+
+      <v-text-field
+        v-model="details.address"
+        :rules="[rules.required]"
+        label="Адрес"
+        required
+      ></v-text-field>
+    </v-form>
+
+    <div class="text-right ma-3" v-if="cartItemsNumber">
+      <v-btn large color="primary" @click="createOrder">Отправить заказ</v-btn>
     </div>
   </v-container>
 </template>
@@ -35,6 +59,14 @@ export default {
   },
   data(){
     return {
+      details: {
+        fullName: '',
+        address: ''
+      },
+      rules: {
+        required: value => !!value || 'Required.',
+      },
+      sentOrder: false,
       items: [],
       deliveryItem: {
         price: 10,
@@ -64,6 +96,28 @@ export default {
       return totalItems
     },
   },
+  methods: {
+    async createOrder(){
+      const { order } = await this.$axios.$post('/api/order', {
+        items: this.cartItems.map(cartItem => {
+          return {
+            quantity: cartItem.quantity,
+            product_id: cartItem.product.id
+          }
+        }),
+        currency: this.$store.state.currency.currentCurrency,
+        details: this.details,
+        delivery: this.deliveryItem
+      })
+      await this.$store.commit('cart/clearCart')
+      this.sentOrder = true
+      if (order){
+        if (this.$auth.loggedIn) {
+          await this.$router.push('/orders/order/' + order.id)
+        }
+      }
+    }
+  }
 }
 </script>
 

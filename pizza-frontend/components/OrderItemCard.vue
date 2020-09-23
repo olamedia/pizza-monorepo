@@ -5,28 +5,21 @@
     </div>
     <div class="d-flex flex-grow-1">
       <div class="flex-grow-1">
-        <v-card-title>{{ product.name }}</v-card-title>
-        <v-card-text class="text-left">{{ product.description }}</v-card-text>
+        <v-card-title>{{ orderItem.name }}</v-card-title>
       </div>
       <div class="pa-3 flex-grow-0 price-quantity-grid">
         <div class="price-quantity-grid--price">
-          <PriceChip :price="product.price" :currency="product.price_currency" :targetCurrency="currency"></PriceChip>
+          <BasePriceChip :price="orderItem.price" :currency="orderItem.price_currency"></BasePriceChip>
           <span class="price-quantity-grid--sign">×</span>
         </div>
         <div class="price-quantity-grid--quantity">
           <span>
-          {{ quantity }}
+          {{ orderItem.quantity }}
             </span>
-        </div>
-        <div class="price-quantity-grid--increment">
-          <v-btn @click="modifyCartItem(product, 1)" small icon><v-icon>mdi-plus</v-icon></v-btn>
-        </div>
-        <div class="price-quantity-grid--decrement">
-          <v-btn @click="modifyCartItem(product, -1)" small icon><v-icon>mdi-minus</v-icon></v-btn>
         </div>
         <div class="price-quantity-grid--total">
           <span class="price-quantity-grid--sign">=</span>
-          <PriceChip :price="product.price" :currency="product.price_currency" :targetCurrency="currency" :quantity="quantity"></PriceChip>
+          <BasePriceChip :price="orderItem.price * orderItem.quantity" :currency="orderItem.price_currency"></BasePriceChip>
         </div>
       </div>
     </div>
@@ -38,16 +31,13 @@
 import PriceChip from "~/components/PriceChip";
 
 import { saveCartThrottler } from '~/helpers/saveCartThrottler'
+import BasePriceChip from "~/components/BasePriceChip";
 
 export default {
-name: "OrderedProductCard",
-  components: {PriceChip},
+name: "OrderItemCard",
+  components: {BasePriceChip, PriceChip},
   props: {
-    quantity: {
-      type: Number,
-      required: true
-    },
-    product: {
+    orderItem: {
       type: Object,
       required: true
     }
@@ -55,14 +45,6 @@ name: "OrderedProductCard",
   computed: {
     currency() {
       return this.$store.state.currency.currentCurrency
-    }
-  },
-  methods: {
-    async modifyCartItem(product, quantity){
-      await this.$store.dispatch('cart/addProduct', {product, quantity})
-      saveCartThrottler(async () => {
-        await this.$store.dispatch('cart/saveUserCart', this.$axios)
-      })
     }
   }
 }

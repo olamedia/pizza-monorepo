@@ -27,6 +27,11 @@ final class CreateOrderItemsTable extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id')->nullable(false)->index();
+            $table->unsignedBigInteger('product_id');
+            $table->string('name');
+            $table->integer('quantity')->nullable(false);
+            $table->float('price');
+            $table->string('price_currency', '3');
             $table->timestamps();
 
             $table->foreign('order_id')

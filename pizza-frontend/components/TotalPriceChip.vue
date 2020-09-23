@@ -1,12 +1,12 @@
 <template>
-  <PriceChipInCurrentCurrency primary :price="totalPrice" :currency="currency"></PriceChipInCurrentCurrency>
+  <BasePriceChip :price="totalPrice" :title="totalPrice" :currency="currency"></BasePriceChip>
 </template>
 
 <script>
-import PriceChipInCurrentCurrency from "~/components/PriceChipInCurrentCurrency";
+import BasePriceChip from "~/components/BasePriceChip";
 export default {
   name: "TotalPriceChip",
-  components: {PriceChipInCurrentCurrency},
+  components: {BasePriceChip},
   props: {
     items: {
       type: Array,
@@ -26,7 +26,7 @@ export default {
     productResultPrice(item){
       const rate = this.productResultRate(item);
       console.log(rate + ` from ${item.currency} to ${this.currency}`)
-      return (item.price * rate).toPrecision(2);
+      return (item.price * rate).toPrecision(3);
     },
     itemTotalPrice(item){
       return this.productResultPrice(item) * item.quantity
@@ -48,9 +48,8 @@ export default {
         console.log(item, price)
         return price
       }).reduce((accumulator, itemTotalPrice) => {
-        console.log(itemTotalPrice)
-        accumulator = accumulator + itemTotalPrice
-        return accumulator
+        console.log('[TotalPriceChip][totalPrice] reduce ', itemTotalPrice)
+        return accumulator + itemTotalPrice
       }, 0);
     }
   }

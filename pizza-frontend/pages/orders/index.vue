@@ -8,6 +8,14 @@
       <v-card-title>Заказ №{{ order.id }}</v-card-title>
       <v-card-text class="text-left">{{ formatDate(order.created_at) }}</v-card-text>
     </v-card>
+
+
+      <v-pagination
+        v-model="page"
+        :length="totalPages"
+        prev-icon="mdi-menu-left"
+        next-icon="mdi-menu-right"
+      ></v-pagination>
     </v-container>
 
 </template>
@@ -18,13 +26,22 @@ export default {
   },
   data(){
     return {
-      'orders': []
+      page: 1,
+      totalPages: 1,
+      orders: []
     }
   },
   async fetch(){
     try {
-      const result = await this.$axios.$get('/api/user/order/list')
-      this.orders = result.data;
+      const result = await this.$axios.$get('/api/user/order/list', {
+        params: {
+          page: this.page
+        }
+      })
+      const {current_page, data, last_page} = result;
+      this.page = current_page;
+      this.totalPages = last_page;
+      this.orders = data;
     }catch ( error ){
       if ('response' in error && error.response.status === 403) {
         return await this.$auth.logout();
@@ -37,7 +54,11 @@ export default {
 
       return date.toLocaleDateString()
     }
-  }
+  },
+  watch: {
+    'page': '$fetch',
+    '$route.query': '$fetch'
+  },
 }
 </script>
 

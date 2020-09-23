@@ -52,7 +52,7 @@ export default {
   data(){
     return {
       page: 1,
-      totalPages: 4,
+      totalPages: 1,
       products: []
     }
   },

@@ -5,6 +5,7 @@ namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class OrderItemFactory extends Factory
@@ -23,8 +24,14 @@ final class OrderItemFactory extends Factory
      */
     public function definition()
     {
+        $product = Product::all()->random();
         return [
-            'order_id' => Order::factory()
+            'order_id' => Order::factory(),
+            'product_id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            'price_currency' => $product->price_currency,
+            'quantity' => $this->faker->numberBetween(1, 3)
         ];
     }
 }
